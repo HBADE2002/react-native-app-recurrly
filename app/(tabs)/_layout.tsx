@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     height: TAB_SIZE,
 
     borderRadius: TAB_SIZE / 2,
-
     alignItems: "center",
     justifyContent: "center",
   },
