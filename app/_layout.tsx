@@ -4,7 +4,7 @@ import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
-} from "@react-navigation/native";
+} from "expo-router/react-navigation";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -16,7 +16,7 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     "sans-regular": require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
     "sans-semibold": require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
     "sans-bold": require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
@@ -24,12 +24,17 @@ export default function RootLayout() {
     "sans-medium": require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
     "sans-light": require("../assets/fonts/PlusJakartaSans-Light.ttf"),
   });
-
+  console.log("fonts:", fontsLoaded, "error:", fontError);
+  if (fontError) throw fontError;
   useEffect(() => {
-    if (fontsLoaded) {
+    if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   if (!fontsLoaded) {
     return null;
